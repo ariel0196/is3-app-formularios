@@ -144,12 +144,12 @@
 					})
 					.toArray()
 					.then((cuestionarios) => {
-						if (cuestionarios.length == 0) this.$router.push('/404')
+						if (cuestionarios.length == 0) this.$router.replace('/404')
 						this.cuestionario = cuestionarios[0]
-					})/*
+					})
 					.catch(() => {
-						this.$router.push('/404')
-					})*/
+						this.$router.replace('/404')
+					})
 			}
 		}
 	}
