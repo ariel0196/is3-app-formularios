@@ -26,7 +26,6 @@
 				</b-table>
 
 				<b-button @click="agregarCuestionario" variant="success">+ Agregar Cuestionario</b-button>
-				{{ cuestionarios }}
 			</b-col>
 		</b-row>
 	</div>
@@ -53,7 +52,17 @@
 				this.$router.push(`/ver/${id}`)
 			},
 			agregarCuestionario () {
-
+				this.$db.cuestionarios
+					.add({
+						nombre: '',
+						preguntas: []
+					})
+					.then((id) => {
+						this.$router.push(`/editar/${id}`)
+					})
+					.catch(() => {
+						alert('Error al agregar un cuestionario')
+					})
 			},
 			fetchData () {
 

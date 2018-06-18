@@ -50,6 +50,9 @@
 </template>
 <script>
 	export default {
+		created () {
+			this.fetchData()
+		},
 		data () {
 			return {
 				cuestionario: {
@@ -57,6 +60,26 @@
 					nombre: '',
 					preguntas: []
 				}
+			}
+		},
+		watch: {
+			'$route': 'fetchData'
+		},
+		methods: {
+			fetchData () {
+				var id = this.$route.params.id
+				this.$db.cuestionarios
+					.where({
+						id: parseInt(id)
+					})
+					.toArray()
+					.then((cuestionarios) => {
+						if (cuestionarios.length == 0) this.$router.replace('/404')
+						this.cuestionario = cuestionarios[0]
+					})
+					.catch(() => {
+						this.$router.replace('/404')
+					})
 			}
 		}
 	}
