@@ -1,35 +1,33 @@
 <template>
 	<div>
-		<h4>Cuestionarios</h4>
+		<b-row>
+			<b-col>
 
-		<hr>
+				<b-breadcrumb
+					:items="[
+						{ text: 'Inicio', to: '/', active: true }
+					]"
+					class="mt-4"/>
 
-		<p>
-			<button @click="agregarCuestionario">Nuevo</button>
-		</p>
+				<h3 class="mt-4">Listado de Cuestionarios</h3>
 
-		<table border="1">
-			<thead>
-				<tr>
-					<th>
-						Nombre Formulario
-					</th>
-					<th>
-						Operaciones
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="cuestionario in cuestionarios">
-					<td>{{ cuestionario. nombre }}</td>
-					<td>
-						<button @click="editar(cuestionario.id)">Edicion</button>
-						<button @click="ver(cuestionario.id)">Resultado</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+				<b-table
+					:fields="fields"
+					:items="cuestionarios"
+					striped
+					outlined
+					class="mt-4">
 
+					<template slot="acciones" slot-scope="data">
+						<b-button @click="editar(data.item.id)" variant="success">Editar</b-button>
+						<b-button @click="ver(data.item.id)" variant="primary">Ver</b-button>
+					</template>
+
+				</b-table>
+
+				<b-button @click="agregarCuestionario" variant="success">+ Agregar Cuestionario</b-button>
+			</b-col>
+		</b-row>
 	</div>
 </template>
 
@@ -39,6 +37,7 @@
 		data () {
 			return {
 				fields: [
+					{ key: 'id', label: '#' },
 					{ key: 'nombre', label: 'Nombre' },
 					{ key: 'acciones', label: 'Acciones' }
 				],
@@ -80,6 +79,3 @@
 
 	}
 </script>
-<style scoped>
-
-</style>

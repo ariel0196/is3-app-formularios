@@ -1,91 +1,70 @@
 <template>
-	<b-row>
-		<b-col>
+	<div>
+		<h4>Editar Cuestionario</h4>
 
-			<b-breadcrumb
-				:items="[
-					{ text: 'Inicio', to: '/' },
-					{ text: 'Editar Cuestionario', active: true },
-					{ text: cuestionario.nombre, active: true },
-				]"
-				class="mt-4"/>
+		<hr>
 
-			<h4 class="mt-4">Datos del Cuestionario</h4>
+		<fieldset id="cuestionario">
+			<legend>Cuestionario</legend>
 
-			<b-card bg-variant="light" class="mt-4" >
-				<b-form-group label="Nombre" horizontal>
-					<b-form-input v-model="cuestionario.nombre" type="text"/>
-				</b-form-group>
-			</b-card>
+			<div>
+				<label>Nombre del Formulario</label>
+				<input type="text" v-model="cuestionario.nombre">
+				<button @click="guardarCuestionario" :disabled="disabled">Guardar</button>
+			</div>
 
-			<h4 class="mt-4">Preguntas</h4>
+			<fieldset id="preguntas">
+				<legend>Lista de preguntas</legend>
 
-			<b-card
-				v-for="pregunta, preguntaKey in cuestionario.preguntas"
-				bg-variant="light"
-				class="mt-4">
 
-				<b-form-group label="Tipo" horizontal>
-					<b-form-select :options="tipos" v-model="pregunta.tipo"/>
-				</b-form-group>
+				<button @click="agregarPregunta">Nueva Pregunta</button>
 
-				<b-form-group label="Enunciado" horizontal>
-					<b-form-input type="text" v-model="pregunta.enunciado"/>
-				</b-form-group>
 
-				<b-form-group
-					v-if="(['select', 'radiobutton', 'checkbox'].indexOf(pregunta.tipo) >= 0)"
-					label="Opciones"
-					horizontal>
+				<fieldset v-for="pregunta, preguntaKey in cuestionario.preguntas" :class="`pregunta-${preguntaKey}`">
+					<legend>Pregunta {{ preguntaKey + 1 }}</legend>
 
-					<b-card>
+					<div>
+						<label>Tipo</label>
+						<select v-model="pregunta.tipo">
+							<option v-for="tipo in tipos" :value="tipo">{{tipo}}</option>
+						</select>
+					</div>
 
-						<b-input-group
-							v-for="opcion, opcionKey in pregunta.opciones"
-							:prepend="`Opcion ${opcionKey + 1}`"
-							class="mt-2">
+					<div>
+						<label>Enunciado</label>
+						<input type="text" v-model="pregunta.enunciado"/>
+					</div>
 
-							<b-form-input v-model="pregunta.opciones[opcionKey]" type="text"/>
-							<b-button
-								@click="eliminarOpcion(preguntaKey, opcionKey)"
-								slot="append"
-								variant="danger">Eliminar</b-button>
-						</b-input-group>
+					<fieldset v-if="(['select', 'radiobutton', 'checkbox'].indexOf(pregunta.tipo) >= 0)">
+						<legend>Opciones</legend>
 
-						<b-button
-							@click="agregarOpcion(preguntaKey)"
-							slot="footer"
-							variant="primary">
-							Agregar Opcion
-						</b-button>
-					</b-card>
-				</b-form-group>
+						<div v-for="opcion, opcionKey in pregunta.opciones">
+							<label>Opcion {{ opcionKey + 1 }}</label>
+							<input type="text" v-model="pregunta.opciones[opcionKey]">
+							<button @click="eliminarOpcion(preguntaKey, opcionKey)">Eliminar</button>
+						</div>
 
-				<b-button
-					@click="eliminarPregunta(preguntaKey)"
-					slot="footer"
-					variant="danger">
-					Eliminar Pregunta
-				</b-button>
+						<div>
+							<button @click="agregarOpcion(preguntaKey)">Agregar Opcion</button>
+						</div>
 
-			</b-card>
+					</fieldset>
 
-			<b-button
-				@click="agregarPregunta"
-				variant="primary"
-				class="mt-4">
-				Agregar Pregunta
-			</b-button>
+					<button @click="eliminarPregunta(preguntaKey)">Eliminar Pregunta</button>
 
-			<b-button
-				@click="guardarCuestionario"
-				variant="success"
-				class="mt-4">
-				Guardar
-			</b-button>
+				</fieldset>
+			</fieldset>
+		</fieldset>
 
-		</b-col>
-	</b-row>
+		<hr>
+
+		<h4>Menu:</h4>
+
+		<ul>
+			<li><router-link to="/">Atras</router-link></li>
+		</ul>
+
+	</div>
 </template>
 <script>
 	export default {
@@ -94,6 +73,7 @@
 		},
 		data () {
 			return {
+				disabled: false,
 				tipos: [ 'radiobutton', 'checkbox', 'text', 'select', 'textarea' ],
 				cuestionario: {
 					id: null,
@@ -130,10 +110,10 @@
 				this.$db.cuestionarios
 					.put(cuestionario)
 					.then(() => {
-						alert('Cuestionario guardado Correctamente')
+						this.$router.push('/')
 					})
 					.catch(() => {
-						alert('Error al guardar el cuestionario')
+						alert('Errr')
 					})
 			},
 			fetchData () {
@@ -144,13 +124,41 @@
 					})
 					.toArray()
 					.then((cuestionarios) => {
-						if (cuestionarios.length == 0) this.$router.replace('/404')
+						if (cuestionarios.length == 0) {
+							this.disabled = true
+							return
+						}
 						this.cuestionario = cuestionarios[0]
 					})
 					.catch(() => {
-						this.$router.replace('/404')
+						this.disabled = true
 					})
 			}
 		}
 	}
 </script>
+<style>
+	fieldset {
+		padding: 15px;
+		margin: 15px;
+	}
+
+	fieldset legend {
+		font-weight: bold;
+	}
+
+	#cuestionario {
+		background-color: LightBlue ;
+		border: 5px solid LightBlue;
+	}
+
+	#preguntas {
+		background-color: LightCoral ;
+		border: 5px solid LightCoral ;
+	}
+
+	[class^="pregunta-"] {
+		background-color: lightgray ;
+		border: 5px solid lightgray ;
+	}
+</style>

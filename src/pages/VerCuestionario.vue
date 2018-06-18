@@ -1,52 +1,52 @@
 <template>
-	<b-row>
-		<b-col>
+	<div>
+		<h4>Nombre: {{ cuestionario.nombre }}</h4>
 
-			<b-breadcrumb
-				:items="[
-					{ text: 'Inicio', to: '/' },
-					{ text: 'Ver Cuestionario', active: true },
-					{ text: cuestionario.nombre, active: true },
-				]"
-				class="mt-4"/>
+		<fieldset>
+			<legend>Preguntas</legend>
 
-			<h4 class="mt-4">{{ cuestionario.nombre }}</h4>
+			<div v-for="pregunta, preguntaKey in cuestionario.preguntas" style="margin-bottom: 10px">
 
-			<b-form-group
-				v-for="pregunta, preguntaKey in cuestionario.preguntas"
-				:label="pregunta.enunciado"
-				class="mt-4">
+				<label>{{ pregunta.enunciado }}</label>
+
+				<br>
 
 				<template v-if="pregunta.tipo == 'text'">
-					<b-form-input type="text"/>
+					<input type="text"/>
 				</template>
 
 				<template v-if="pregunta.tipo == 'textarea'">
-					<b-form-textarea rows="3" max-rows="6"/>
+					<textarea rows="3" max-rows="6"/>
 				</template>
 
 				<template v-else-if="pregunta.tipo == 'select'">
-					<b-form-select :options="pregunta.opciones"></b-form-select>
+					<select>
+						<option v-for="opcion in pregunta.opciones">{{ opcion }}</option>
+					</select>
 				</template>
 
 				<template v-else-if="pregunta.tipo == 'checkbox'">
-					<b-form-checkbox-group
-						:name="`pregunta-${preguntaKey}`"
-						:options="pregunta.opciones"
-						stacked />
+					<div v-for="opcion in pregunta.opciones">
+						<input type="checkbox"> {{ opcion }}
+					</div>
 				</template>
 
 				<template v-else>
-					<b-form-radio-group
-						:name="`pregunta-${preguntaKey}`"
-						:options="pregunta.opciones"
-						stacked/>
+					<div v-for="opcion in pregunta.opciones">
+						<input type="radio"> {{ opcion }}
+					</div>
 				</template>
+			</div>
 
-			</b-form-group>
+		</fieldset>
 
-		</b-col>
-	</b-row>
+
+		<h4>Menu:</h4>
+
+		<ul>
+			<li><router-link to="/">Atras</router-link></li>
+		</ul>
+	</div>
 </template>
 <script>
 	export default {
@@ -74,12 +74,12 @@
 					})
 					.toArray()
 					.then((cuestionarios) => {
-						if (cuestionarios.length == 0) this.$router.replace('/404')
+						if (cuestionarios.length == 0) return
 						this.cuestionario = cuestionarios[0]
 					})
-					.catch(() => {
+					/*.catch(() => {
 						this.$router.replace('/404')
-					})
+					})*/
 			}
 		}
 	}
