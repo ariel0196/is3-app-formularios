@@ -78,7 +78,7 @@
 			</b-button>
 
 			<b-button
-				@click=""
+				@click="guardarCuestionario"
 				variant="success"
 				class="mt-4">
 				Guardar
@@ -128,7 +128,13 @@
 			guardarCuestionario () {
 				var cuestionario = this.cuestionario
 				this.$db.cuestionarios
-					.put(cuestionario);
+					.put(cuestionario)
+					.then(() => {
+						alert('Cuestionario guardado Correctamente')
+					})
+					.catch(() => {
+						alert('Error al guardar el cuestionario')
+					})
 			},
 			fetchData () {
 				var id = this.$route.params.id
@@ -140,10 +146,10 @@
 					.then((cuestionarios) => {
 						if (cuestionarios.length == 0) this.$router.push('/404')
 						this.cuestionario = cuestionarios[0]
-					})
+					})/*
 					.catch(() => {
 						this.$router.push('/404')
-					})
+					})*/
 			}
 		}
 	}
