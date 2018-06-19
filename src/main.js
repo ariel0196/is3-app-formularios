@@ -11,7 +11,7 @@ import EditarCuestionario from './pages/EditarCuestionario.vue'
 import VerCuestionario from './pages/VerCuestionario.vue'
 import NoEncontrado from './pages/NoEncontrado.vue'
 
-Dexie.delete('midatabase')
+// Dexie.delete('midatabase')
 
 const db = new Dexie('midatabase');
 
@@ -19,38 +19,38 @@ db.version(1).stores({
     cuestionarios: '++id,nombre,*preguntas'
 })
 
-db.cuestionarios.bulkAdd([
-	{
-		nombre: 'Test psicologico',
-		preguntas: [
-			{
-				enunciado: '¿Sos normal?',
-				tipo: 'text',
-				opciones: []
-			},
-			{
-				enunciado: '¿Sos normal 2?',
-				tipo: 'select',
-				opciones: [ 'si', 'no']
-			}
-		]
-	},
-	{
-		nombre: 'Test de informatica',
-		preguntas: [
-			{
-				enunciado: '¿Sos normal?',
-				tipo: 'text',
-				opciones: []
-			},
-			{
-				enunciado: '¿Sos normal 2?',
-				tipo: 'select',
-				opciones: [ 'si', 'no']
-			}
-		]
-	}
-])
+// db.cuestionarios.bulkAdd([
+// 	{
+// 		nombre: 'Test psicologico',
+// 		preguntas: [
+// 			{
+// 				enunciado: '¿Sos normal?',
+// 				tipo: 'text',
+// 				opciones: []
+// 			},
+// 			{
+// 				enunciado: '¿Sos normal 2?',
+// 				tipo: 'select',
+// 				opciones: [ 'si', 'no']
+// 			}
+// 		]
+// 	},
+// 	{
+// 		nombre: 'Test de informatica',
+// 		preguntas: [
+// 			{
+// 				enunciado: '¿Sos normal?',
+// 				tipo: 'text',
+// 				opciones: []
+// 			},
+// 			{
+// 				enunciado: '¿Sos normal 2?',
+// 				tipo: 'select',
+// 				opciones: [ 'si', 'no']
+// 			}
+// 		]
+// 	}
+// ])
 
 Vue.prototype.$db = db
 
