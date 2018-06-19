@@ -89,21 +89,14 @@
 </template>
 <script>
 	export default {
-		created () {
-			this.fetchData()
-		},
 		data () {
 			return {
 				tipos: [ 'radiobutton', 'checkbox', 'text', 'select', 'textarea' ],
 				cuestionario: {
-					id: null,
 					nombre: '',
 					preguntas: []
 				}
 			}
-		},
-		watch : {
-			'$route': 'fetchData'
 		},
 		methods: {
 			eliminarOpcion (preguntaKey, opcionKey) {
@@ -135,28 +128,13 @@
 
 				var cuestionario = this.cuestionario
 				this.$db.cuestionarios
-					.put(cuestionario)
-					.then(() => {
+					.add(cuestionario)
+					.then((id) => {
 						alert('Cuestionario guardado Correctamente')
 						this.$router.push('/')
 					})
 					.catch(() => {
 						alert('Error al guardar el cuestionario')
-					})
-			},
-			fetchData () {
-				var id = this.$route.params.id
-				this.$db.cuestionarios
-					.where({
-						id: parseInt(id)
-					})
-					.toArray()
-					.then((cuestionarios) => {
-						if (cuestionarios.length == 0) this.$router.replace('/404')
-						this.cuestionario = cuestionarios[0]
-					})
-					.catch(() => {
-						this.$router.replace('/404')
 					})
 			}
 		}

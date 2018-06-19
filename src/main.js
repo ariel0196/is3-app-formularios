@@ -10,6 +10,7 @@ import ListarCuestionarios from './pages/ListarCuestionarios.vue'
 import EditarCuestionario from './pages/EditarCuestionario.vue'
 import VerCuestionario from './pages/VerCuestionario.vue'
 import NoEncontrado from './pages/NoEncontrado.vue'
+import AgregarCuestionario from './pages/AgregarCuestionario.vue'
 
 // Dexie.delete('is3-db')
 
@@ -66,6 +67,10 @@ const routes = [
 			{
 				path: '',
 				component: ListarCuestionarios
+			},
+			{
+				path: 'agregar',
+				component: AgregarCuestionario
 			},
 			{
 				path: 'editar/:id',

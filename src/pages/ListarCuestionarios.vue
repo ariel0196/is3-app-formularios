@@ -21,6 +21,7 @@
 					<template slot="acciones" slot-scope="data">
 						<b-button @click="editar(data.item.id)" variant="success">Editar</b-button>
 						<b-button @click="ver(data.item.id)" variant="primary">Ver</b-button>
+						<b-button @click="eliminar(data.item.id)" variant="danger">Eliminar</b-button>
 					</template>
 
 				</b-table>
@@ -51,18 +52,33 @@
 			ver (id) {
 				this.$router.push(`/ver/${id}`)
 			},
-			agregarCuestionario () {
+			eliminar (id) {
 				this.$db.cuestionarios
-					.add({
-						nombre: '',
-						preguntas: []
-					})
-					.then((id) => {
-						this.$router.push(`/editar/${id}`)
+					.delete(id)
+					.then(() => {
+						alert('Cuestionario Eliminado Correctamente')
+						this.cuestionarios = this.cuestionarios.filter((item) => {
+							return item.id != id
+						})
 					})
 					.catch(() => {
-						alert('Error al agregar un cuestionario')
+						alert('Error al eliminar el cuestionario')
 					})
+
+			},
+			agregarCuestionario () {
+				this.$router.push('/agregar')
+				// this.$db.cuestionarios
+				// 	.add({
+				// 		nombre: '',
+				// 		preguntas: []
+				// 	})
+				// 	.then((id) => {
+				// 		this.$router.push(`/editar/${id}`)
+				// 	})
+				// 	.catch(() => {
+				// 		alert('Error al agregar un cuestionario')
+				// 	})
 			},
 			fetchData () {
 

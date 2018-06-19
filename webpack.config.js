@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './public'),
-    publicPath: './', // en base al HTML
+    // publicPath: './', // en base al HTML
     filename: 'build.js'
   },
   module: {
@@ -46,6 +46,7 @@ module.exports = {
     extensions: ['*', '.js', '.vue', '.json']
   },
   devServer: {
+	contentBase: path.join(__dirname, '/public/'),
     historyApiFallback: true,
     noInfo: true,
     overlay: true
