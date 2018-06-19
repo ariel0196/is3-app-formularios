@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // import BootstrapVue from 'bootstrap-vue'
-// import 'bootstrap/dist/css/bootstrap.css'
+import './assets/materialize.min.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Dexie from 'dexie';
 

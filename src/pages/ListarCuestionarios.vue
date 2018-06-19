@@ -1,34 +1,53 @@
 <template>
 	<div>
-		<h4>Cuestionarios</h4>
 
-		<hr>
+		<div class="row">
+			<nav>
+				<div class="nav-wrapper">
+					<div class="col s12">
+						<router-link to="/" class="breadcrumb">Inicio</router-link>
+					</div>
+				</div>
+			</nav>
+		</div>
 
-		<p>
-			<button @click="agregarCuestionario">Nuevo</button>
-		</p>
+		<div class="row">
 
-		<table border="1">
-			<thead>
-				<tr>
-					<th>
-						Nombre Formulario
-					</th>
-					<th>
-						Operaciones
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="cuestionario in cuestionarios">
-					<td>{{ cuestionario. nombre }}</td>
-					<td>
-						<button @click="editar(cuestionario.id)">Edicion</button>
-						<button @click="ver(cuestionario.id)">Resultado</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+			<table class="striped" >
+				<thead>
+					<tr>
+						<th>
+							Nombre Formulario
+						</th>
+						<th>
+							Operaciones
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="cuestionario in cuestionarios">
+						<td>{{ cuestionario. nombre }}</td>
+						<td>
+							<a class="waves-effect waves-light btn-small"
+								@click="editar(cuestionario.id)">
+								Editar
+							</a>
+							<a class="waves-effect waves-light btn-small"
+								@click="ver(cuestionario.id)">
+								Ver
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+		<div class="row">
+			<a class="btn-floating btn-large waves-effect waves-light red" @click="agregarCuestionario">
+				<i class="material-icons">add</i>
+			</a>
+		</div>
 
 	</div>
 </template>
@@ -39,8 +58,8 @@
 		data () {
 			return {
 				fields: [
-					{ key: 'nombre', label: 'Nombre' },
-					{ key: 'acciones', label: 'Acciones' }
+				{ key: 'nombre', label: 'Nombre' },
+				{ key: 'acciones', label: 'Acciones' }
 				],
 				cuestionarios: []
 			}
@@ -54,24 +73,24 @@
 			},
 			agregarCuestionario () {
 				this.$db.cuestionarios
-					.add({
-						nombre: '',
-						preguntas: []
-					})
-					.then((id) => {
-						this.$router.push(`/editar/${id}`)
-					})
-					.catch(() => {
-						alert('Error al agregar un cuestionario')
-					})
+				.add({
+					nombre: '',
+					preguntas: []
+				})
+				.then((id) => {
+					this.$router.push(`/editar/${id}`)
+				})
+				.catch(() => {
+					alert('Error al agregar un cuestionario')
+				})
 			},
 			fetchData () {
 
 				this.$db.cuestionarios
-					.toArray()
-					.then((cuestionarios) => {
-						this.cuestionarios = cuestionarios
-					})
+				.toArray()
+				.then((cuestionarios) => {
+					this.cuestionarios = cuestionarios
+				})
 			}
 		},
 		created () {
@@ -80,6 +99,3 @@
 
 	}
 </script>
-<style scoped>
-
-</style>

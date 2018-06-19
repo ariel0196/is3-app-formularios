@@ -1,86 +1,96 @@
 <template>
-	<div>
-		<h4>Nombre: {{ cuestionario.nombre }}</h4>
+    <div>
+        <div class="row">
+            <nav>
+                <div class="nav-wrapper">
+                    <div class="col s12">
+                        <router-link to="/" class="breadcrumb">Inicio</router-link>
+                        <a href="#" class="breadcrumb">Visualizar Cuestionario</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
 
-		<fieldset>
-			<legend>Preguntas</legend>
+        <div class="row">
+            <h4>{{ cuestionario.nombre }}</h4>
+        </div>
 
-			<div v-for="pregunta, preguntaKey in cuestionario.preguntas" style="margin-bottom: 10px">
+        <form class="row">
 
-				<label>{{ pregunta.enunciado }}</label>
+            <div v-for="pregunta, preguntaKey in cuestionario.preguntas" style="margin-bottom: 10px">
 
-				<br>
+                <label>{{ pregunta.enunciado }}</label>
 
-				<template v-if="pregunta.tipo == 'text'">
-					<input type="text"/>
-				</template>
+                <template v-if="pregunta.tipo == 'text'">
+                    <input type="text">
+                </template>
 
-				<template v-if="pregunta.tipo == 'textarea'">
-					<textarea rows="3" max-rows="6"/>
-				</template>
+                <template v-if="pregunta.tipo == 'textarea'">
+                    <textarea rows="3" max-rows="6"/>
+                </template>
 
-				<template v-else-if="pregunta.tipo == 'select'">
-					<select>
-						<option v-for="opcion in pregunta.opciones">{{ opcion }}</option>
-					</select>
-				</template>
+                <template v-else-if="pregunta.tipo == 'select'">
+                    <select class="browser-default">
+                        <option value="" disabled selected>Elija su respuesta</option>
+                        <option v-for="opcion in pregunta.opciones">{{ opcion }}</option>
+                    </select>
+                </template>
 
-				<template v-else-if="pregunta.tipo == 'checkbox'">
-					<div v-for="opcion in pregunta.opciones">
-						<input type="checkbox"> {{ opcion }}
-					</div>
-				</template>
+                <template v-else-if="pregunta.tipo == 'checkbox'">
+                    <p v-for="opcion in pregunta.opciones">
+                        <label>
+                            <input type="checkbox"  class="filled-in">
+                            <span>{{ opcion }}</span>
+                        </label>
+                    </p>
+                </template>
 
-				<template v-else>
-					<div v-for="opcion in pregunta.opciones">
-						<input type="radio"> {{ opcion }}
-					</div>
-				</template>
-			</div>
+                <template v-else>
+                    <p v-for="opcion in pregunta.opciones">
+                        <label>
+                            <input type="radio">
+                            <span>{{ opcion }}</span>
+                        </label>
+                    </p>
+                </template>
 
-		</fieldset>
-
-
-		<h4>Menu:</h4>
-
-		<ul>
-			<li><router-link to="/">Atras</router-link></li>
-		</ul>
-	</div>
+            </div>
+        </form>
+    </div>
 </template>
 <script>
-	export default {
-		created () {
-			this.fetchData()
-		},
-		data () {
-			return {
-				cuestionario: {
-					id: null,
-					nombre: '',
-					preguntas: []
-				}
-			}
-		},
-		watch: {
-			'$route': 'fetchData'
-		},
-		methods: {
-			fetchData () {
-				var id = this.$route.params.id
-				this.$db.cuestionarios
-					.where({
-						id: parseInt(id)
-					})
-					.toArray()
-					.then((cuestionarios) => {
-						if (cuestionarios.length == 0) return
-						this.cuestionario = cuestionarios[0]
-					})
-					/*.catch(() => {
-						this.$router.replace('/404')
-					})*/
-			}
-		}
-	}
-</script>
+    export default {
+        created () {
+            this.fetchData()
+        },
+        data () {
+            return {
+                cuestionario: {
+                    id: null,
+                    nombre: '',
+                    preguntas: []
+                }
+            }
+        },
+        watch: {
+            '$route': 'fetchData'
+        },
+        methods: {
+            fetchData () {
+                var id = this.$route.params.id
+                this.$db.cuestionarios
+                .where({
+                    id: parseInt(id)
+                })
+                .toArray()
+                .then((cuestionarios) => {
+                    if (cuestionarios.length == 0) return
+                        this.cuestionario = cuestionarios[0]
+                })
+                    /*.catch(() => {
+                        this.$router.replace('/404')
+                    })*/
+                }
+            }
+        }
+    </script>
