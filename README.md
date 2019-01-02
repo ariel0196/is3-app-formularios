@@ -1,4 +1,4 @@
-# is3
+# Mini CRUD PWA con Vue y Dexie.js
 
 > A Vue.js project
 
