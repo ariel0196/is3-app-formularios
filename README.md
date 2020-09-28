@@ -1,4 +1,4 @@
-# App CRUD Formularios Vue
+# IS3 CRUD Formularios Vue
 
 > Pequeña App CRUD realizada con Vue y Dexie para la materia IS3
 
