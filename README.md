@@ -1,6 +1,6 @@
-# Mini CRUD PWA con Vue y Dexie.js
+# App CRUD Formularios Vue
 
-> A Vue.js project
+> Pequeña App CRUD realizada con Vue y Dexie para la materia IS3
 
 ## Build Setup
 
